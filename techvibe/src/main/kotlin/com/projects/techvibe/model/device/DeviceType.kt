@@ -1,7 +1,10 @@
 package com.projects.techvibe.model.device
 
 enum class DeviceType {
-    LAPTOP,
-    PC,
-    PRINTER
+    MOBILE_SMARTPHONES,
+    LAPTOP_NOTEBOOKS,
+    AUDIO_EQUIPMENT,
+    SMART_HOME_DEVICES,
+    CAMERA,
+    GAMING_CONSOLES
 }
