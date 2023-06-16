@@ -35,20 +35,16 @@ data class DeviceEntity(
     @Column(nullable = false)
     var imageUrl: String
 ) {
-    companion object {
-        fun create(request: DeviceModification): DeviceEntity {
-            return DeviceEntity(
-                0,
-                request.name,
-                request.type,
-                request.shortDescription,
-                request.longDescription,
-                request.price,
-                request.available,
-                request.imageUrl
-            )
-        }
-    }
+    constructor(request: DeviceModification) : this (
+            0,
+            request.name,
+            request.type,
+            request.shortDescription,
+            request.longDescription,
+            request.price,
+            request.available,
+            request.imageUrl
+    )
 
     fun convert(): Device {
         return Device(id, name, type, shortDescription, longDescription, price, available, imageUrl)

@@ -22,7 +22,7 @@ class DeviceManagementService(private val repository: DeviceRepository) {
 
     fun createDevice(createRequest: DeviceModification): Device {
         validateRequest(createRequest)
-        val data = DeviceEntity.create(createRequest)
+        val data = DeviceEntity(createRequest)
         val result: DeviceEntity
         try {
             result = repository.save(data)
