@@ -5,6 +5,8 @@ import com.projects.techvibe.model.device.DeviceModification
 import com.projects.techvibe.repository.device.DeviceEntity
 import com.projects.techvibe.repository.device.DeviceRepository
 import org.slf4j.LoggerFactory
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -13,6 +15,10 @@ class DeviceManagementService(private val repository: DeviceRepository) {
 
     companion object {
         private val logger = LoggerFactory.getLogger(DeviceManagementService::class.java)
+    }
+
+    fun getAll(pageable: Pageable): Page<Device> {
+        return repository.findAll(pageable).map { it.convert() }
     }
 
     fun getDevice(id: Long): Device {
