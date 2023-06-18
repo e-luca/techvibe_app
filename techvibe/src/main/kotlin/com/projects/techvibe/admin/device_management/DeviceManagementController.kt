@@ -1,6 +1,8 @@
 package com.projects.techvibe.admin.device_management
 
 import com.projects.techvibe.model.device.DeviceModification
+import org.springframework.data.domain.Pageable
+import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -13,6 +15,9 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/admin/device-management")
 class DeviceManagementController(private val service: DeviceManagementService) {
+
+    @GetMapping
+    fun getAll(pageable: Pageable) = service.getAll(pageable)
 
     @GetMapping("/{id}")
     fun get(@PathVariable id: Long) = service.getDevice(id)
