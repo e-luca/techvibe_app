@@ -5,4 +5,7 @@ import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface DeviceRepository : JpaRepository<DeviceEntity, Long>, PagingAndSortingRepository<DeviceEntity, Long>
+interface DeviceRepository : JpaRepository<DeviceEntity, Long>, PagingAndSortingRepository<DeviceEntity, Long> {
+
+    fun findByName(name: String): DeviceEntity?
+}
