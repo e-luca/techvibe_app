@@ -6,7 +6,7 @@ import com.projects.techvibe.model.device.DeviceType
 import jakarta.persistence.*
 
 @Entity
-@Table(name="device")
+@Table(name = "device")
 data class DeviceEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "device_generator")
@@ -33,17 +33,17 @@ data class DeviceEntity(
     var available: Boolean,
 
     @Column(nullable = false)
-    var imageUrl: String
+    var imageUrl: String,
 ) {
     constructor(request: DeviceModification) : this (
-            0,
-            request.name,
-            request.type,
-            request.shortDescription,
-            request.longDescription,
-            request.price,
-            request.available,
-            request.imageUrl
+        0,
+        request.name,
+        request.type,
+        request.shortDescription,
+        request.longDescription,
+        request.price,
+        request.available,
+        request.imageUrl,
     )
 
     fun convert(): Device {
