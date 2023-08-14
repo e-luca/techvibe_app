@@ -1,8 +1,7 @@
 package com.projects.techvibe.repository.user
 
-import org.springframework.data.repository.PagingAndSortingRepository
+import com.projects.techvibe.repository.BaseRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface UserRepository : PagingAndSortingRepository<UserEntity, Long> {
-}
+interface UserRepository : BaseRepository<UserEntity, Long>

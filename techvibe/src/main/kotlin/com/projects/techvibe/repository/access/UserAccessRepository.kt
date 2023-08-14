@@ -1,6 +1,7 @@
 package com.projects.techvibe.repository.access
 
-import org.springframework.data.repository.PagingAndSortingRepository
+import com.projects.techvibe.repository.BaseRepository
 
-interface UserAccessRepository : PagingAndSortingRepository<UserAccessEntity, Long> {
+interface UserAccessRepository : BaseRepository<UserAccessEntity, Long> {
+    fun findByEmail(email: String): UserAccessEntity?
 }

@@ -12,5 +12,5 @@ data class User(
     val dateOfBirth: LocalDate,
     val imageUrl: String,
     val registrationDate: LocalDate,
-    val lastLogin: LocalDateTime
+    val lastLogin: LocalDateTime,
 )

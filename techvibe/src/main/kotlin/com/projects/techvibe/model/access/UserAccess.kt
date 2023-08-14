@@ -1,6 +1,5 @@
 package com.projects.techvibe.model.access
 
-import com.projects.techvibe.model.user.User
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
@@ -15,16 +14,6 @@ data class UserAccess(
     val question: String,
     val answer: String,
 ) : UserDetails {
-
-    constructor(user: User, question: String?, answer: String?) : this (
-        0,
-        user.id,
-        user.email,
-        setOf(UserRoles.USER),
-        false,
-        question ?: "",
-        answer ?: "",
-    )
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         val authorities = roles.map { SimpleGrantedAuthority(it.name) }

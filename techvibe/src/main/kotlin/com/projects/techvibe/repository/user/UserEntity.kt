@@ -1,9 +1,9 @@
 package com.projects.techvibe.repository.user
 
+import com.projects.techvibe.model.user.User
 import jakarta.persistence.*
 import java.time.LocalDate
 import java.time.LocalDateTime
-
 
 @Entity
 @Table(name = "user")
@@ -35,5 +35,22 @@ data class UserEntity(
     var registrationDate: LocalDate,
 
     @Column(nullable = false)
-    var lastLogin: LocalDateTime
-)
+    var lastLogin: LocalDateTime,
+) {
+
+    constructor(user: User) : this (
+        0,
+        user.firstName,
+        user.lastName,
+        user.username,
+        user.email,
+        user.dateOfBirth,
+        user.imageUrl,
+        user.registrationDate,
+        user.lastLogin,
+    )
+
+    fun convert(): User {
+        return User(id, firstName, lastName, username, email, dateOfBirth, imageUrl, registrationDate, lastLogin)
+    }
+}
