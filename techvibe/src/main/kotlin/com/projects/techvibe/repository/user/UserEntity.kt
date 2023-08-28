@@ -46,8 +46,8 @@ data class UserEntity(
         user.email,
         user.dateOfBirth,
         user.imageUrl,
-        user.registrationDate,
-        user.lastLogin,
+        LocalDate.now(),
+        LocalDateTime.now(),
     )
 
     fun convert(): User {

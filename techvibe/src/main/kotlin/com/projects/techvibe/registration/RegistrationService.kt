@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service
 class RegistrationService(private val accessService: AccessService) {
 
     fun register(request: Registration): String {
-        val isValidEmail = accessService.validateEmail(request.user.email)
-        if (!isValidEmail) throw IllegalArgumentException("Email is not valid!")
-        return accessService.registerUser(request.user, request.accessInfo)
+        val isValidRequest = accessService.validateRequest(request)
+        if (!isValidRequest) throw IllegalArgumentException("Request is not valid!")
+        return accessService.registerUser(request)
     }
 }
