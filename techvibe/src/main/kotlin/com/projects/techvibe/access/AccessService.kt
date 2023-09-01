@@ -1,5 +1,6 @@
 package com.projects.techvibe.access
 
+import com.projects.techvibe.email.EmailSender
 import com.projects.techvibe.model.registration.Registration
 import com.projects.techvibe.repository.access.UserAccessEntity
 import com.projects.techvibe.repository.access.UserAccessRepository
@@ -24,6 +25,7 @@ class AccessService(
     private val userAddressRepository: UserAddressRepository,
     private val userPasswordEncoder: BCryptPasswordEncoder,
     private val confirmationTokenService: ConfirmationTokenService,
+    private val emailSender: EmailSender,
 ) : UserDetailsService {
 
     companion object {
@@ -54,7 +56,8 @@ class AccessService(
         userAccessData.setPassword(encodedPassword)
         repository.save(userAccessData)
         userAddressRepository.save(userAddressData)
-        generateToken(savedUser.id)
+
+        sendConfirmationEmail(savedUser)
     }
 
     @Transactional
@@ -72,12 +75,19 @@ class AccessService(
         return "Email confirmed!"
     }
 
-    private fun generateToken(userId: Long) {
+    private fun generateToken(userId: Long): ConfirmationTokenEntity {
         val generatedToken = UUID.randomUUID().toString()
         val now = LocalDateTime.now()
         val expiresAt = now.plusMinutes(15)
         val token = ConfirmationTokenEntity(0, userId, generatedToken, now, expiresAt, null)
 
-        confirmationTokenService.saveToken(token)
+        return confirmationTokenService.saveToken(token)
+    }
+
+    private fun sendConfirmationEmail(user: UserEntity) {
+        val token = generateToken(user.id)
+        val link = "http://localhost:8080/api/v1/auth/confirm?token=$token"
+        val emailContent = emailSender.buildUserConfirmationEmail(user.firstName, link)
+        emailSender.send(user.email, emailContent)
     }
 }

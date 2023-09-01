@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service
 @Service
 class ConfirmationTokenService(private val repository: ConfirmationTokenRepository) {
 
-    fun saveToken(token: ConfirmationTokenEntity) {
-        repository.save(token)
+    fun saveToken(token: ConfirmationTokenEntity): ConfirmationTokenEntity {
+        return repository.save(token)
     }
 
     fun findByToken(token: String): ConfirmationTokenEntity? {
