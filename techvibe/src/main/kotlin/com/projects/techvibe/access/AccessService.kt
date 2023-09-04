@@ -39,8 +39,12 @@ class AccessService(
         return user.convert()
     }
 
-    fun validateRequest(request: Registration): Boolean {
-        return EMAIL_REGEX.matches(request.user.email) && PASSWORD_REGEX.matches(request.accessInfo.password) && USERNAME_REGEX.matches(request.user.username)
+    fun validateRequest(request: Registration) {
+        require(EMAIL_REGEX.matches(request.user.email)) { "Invalid email format!" }
+        require(PASSWORD_REGEX.matches(request.accessInfo.password)) { "Invalid password format!" }
+        require(USERNAME_REGEX.matches(request.user.username)) { "Invalid username format!" }
+        require(repository.findByEmail(request.user.email) == null) { "Email already exists!" }
+        require(repository.findByUsername(request.user.username) == null) { "Username already taken!" }
     }
 
     fun registerUser(request: Registration) {

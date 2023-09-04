@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service
 class AuthService(private val accessService: AccessService) {
 
     fun register(request: Registration) {
-        val isValidRequest = accessService.validateRequest(request)
-        if (!isValidRequest) throw IllegalArgumentException("Request is not valid!")
+        accessService.validateRequest(request)
+
         return accessService.registerUser(request)
     }
 

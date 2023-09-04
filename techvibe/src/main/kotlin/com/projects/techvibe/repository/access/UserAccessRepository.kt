@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface UserAccessRepository : BaseRepository<UserAccessEntity, Long> {
     fun findByEmail(email: String): UserAccessEntity?
+
+    fun findByUsername(username: String): UserAccessEntity?
 }

@@ -16,8 +16,8 @@ import java.io.InputStream
 @Service
 class DeviceManagementService(
     private val repository: DeviceRepository,
-    private val fileExtractor: FileExtractorService
-    ) {
+    private val fileExtractor: FileExtractorService,
+) {
 
     companion object {
         private val logger = LoggerFactory.getLogger(DeviceManagementService::class.java)
@@ -66,7 +66,6 @@ class DeviceManagementService(
             repository.delete(device)
         } catch (ex: Exception) {
             logger.debug("Message: ${ex.message}, Cause: ${ex.cause}")
-
         }
 
         return device.convert()
