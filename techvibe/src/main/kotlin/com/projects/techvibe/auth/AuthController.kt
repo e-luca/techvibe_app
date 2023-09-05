@@ -1,6 +1,7 @@
 package com.projects.techvibe.auth
 
 import com.projects.techvibe.model.registration.Registration
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -16,4 +17,7 @@ class AuthController(private val service: AuthService) {
 
     @PostMapping("/confirm")
     fun confirm(@RequestParam token: String): String = service.confirmUser(token)
+
+    @GetMapping("/questions")
+    fun getSecurityQuestions(): List<String> = service.getSecurityQuestions()
 }
