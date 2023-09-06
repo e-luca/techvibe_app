@@ -1,8 +1,8 @@
-CREATE SEQUENCE user_seq INCREMENT BY 1;
+CREATE SEQUENCE customer_seq INCREMENT BY 1;
 
-CREATE TABLE user
+CREATE TABLE customer
 (
-    id                  BIGINT          NOT NULL DEFAULT nextval('user_seq') PRIMARY KEY,
+    id                  BIGINT          NOT NULL DEFAULT nextval('customer_seq') PRIMARY KEY,
     first_name          VARCHAR(255)    NOT NULL,
     last_name           VARCHAR(255)    NOT NULL,
     username            VARCHAR(255)    NOT NULL UNIQUE,
@@ -27,7 +27,7 @@ CREATE TABLE user_access
     question    TEXT            NOT NULL,
     answer      TEXT            NOT NULL,
 
-    FOREIGN KEY (user_id) REFERENCES user (id)
+    FOREIGN KEY (user_id) REFERENCES customer (id)
 );
 
 CREATE SEQUENCE user_address_seq INCREMENT BY 1;
@@ -47,7 +47,7 @@ CREATE TABLE user_address
     type            VARCHAR(255)    NOT NULL,
     notes           VARCHAR(255)    NOT NULL,
 
-    FOREIGN KEY (user_id) REFERENCES user (id)
+    FOREIGN KEY (user_id) REFERENCES customer (id)
 );
 
 CREATE SEQUENCE confirmation_token_seq INCREMENT BY 1;
@@ -61,5 +61,5 @@ CREATE TABLE confirmation_token
     expired_at      TIMESTAMP       NOT NULL,
     confirmed_at    TIMESTAMP,
 
-    FOREIGN KEY (user_id) REFERENCES user (id)
+    FOREIGN KEY (user_id) REFERENCES customer (id)
 );

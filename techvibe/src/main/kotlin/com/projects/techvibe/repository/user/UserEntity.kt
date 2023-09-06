@@ -6,11 +6,11 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "user")
+@Table(name = "customer")
 data class UserEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_generator")
-    @SequenceGenerator(name = "user_generator", sequenceName = "user_seq", allocationSize = 1)
+    @SequenceGenerator(name = "user_generator", sequenceName = "customer_seq", allocationSize = 1)
     var id: Long,
 
     @Column(nullable = false)

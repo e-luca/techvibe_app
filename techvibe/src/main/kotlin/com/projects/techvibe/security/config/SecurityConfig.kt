@@ -27,7 +27,7 @@ class SecurityConfig(
             }
             .authorizeHttpRequests { authorizeHttpRequests ->
                 authorizeHttpRequests
-                    .requestMatchers("/api/v*/registration/**")
+                    .requestMatchers("/api/v*/auth/**")
                     .permitAll()
                     .anyRequest()
                     .authenticated()
