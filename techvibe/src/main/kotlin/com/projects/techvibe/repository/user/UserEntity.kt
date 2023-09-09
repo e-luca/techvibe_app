@@ -1,6 +1,7 @@
 package com.projects.techvibe.repository.user
 
 import com.projects.techvibe.model.user.User
+import com.projects.techvibe.model.user.UserModification
 import jakarta.persistence.*
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -52,5 +53,15 @@ data class UserEntity(
 
     fun convert(): User {
         return User(id, firstName, lastName, username, email, dateOfBirth, imageUrl, registrationDate, lastLogin)
+    }
+
+    fun update(request: UserModification): UserEntity {
+        firstName = request.firstName
+        lastName = request.lastName
+        email = request.email
+        username = request.username
+        imageUrl = request.imageUrl
+
+        return this
     }
 }

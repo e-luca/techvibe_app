@@ -2,6 +2,7 @@ package com.projects.techvibe.access
 
 import com.projects.techvibe.email.EmailSender
 import com.projects.techvibe.model.registration.Registration
+import com.projects.techvibe.model.user.UserModification
 import com.projects.techvibe.repository.access.UserAccessEntity
 import com.projects.techvibe.repository.access.UserAccessRepository
 import com.projects.techvibe.repository.access.token.ConfirmationTokenEntity
@@ -45,6 +46,15 @@ class AccessService(
         require(USERNAME_REGEX.matches(request.user.username)) { "Invalid username format!" }
         require(repository.findByEmail(request.user.email) == null) { "Email already exists!" }
         require(repository.findByUsername(request.user.username) == null) { "Username already taken!" }
+        require(request.user.firstName.isNotBlank()) { "First name should be provided!" }
+        require(request.user.lastName.isNotBlank()) { "Last name should be provided!" }
+    }
+
+    fun validateRequest(request: UserModification) {
+        require(EMAIL_REGEX.matches(request.email)) { "Invalid email format!" }
+        require(USERNAME_REGEX.matches(request.username)) { "Invalid username format!" }
+        require(request.firstName.isNotBlank()) { "First name should be provided!" }
+        require(request.lastName.isNotBlank()) { "Last name should be provided!" }
     }
 
     fun registerUser(request: Registration) {

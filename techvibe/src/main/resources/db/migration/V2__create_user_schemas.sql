@@ -27,7 +27,7 @@ CREATE TABLE user_access
     question    TEXT            NOT NULL,
     answer      TEXT            NOT NULL,
 
-    FOREIGN KEY (user_id) REFERENCES customer (id)
+    FOREIGN KEY (user_id) REFERENCES customer (id) ON DELETE CASCADE
 );
 
 CREATE SEQUENCE user_address_seq INCREMENT BY 1;
@@ -47,7 +47,7 @@ CREATE TABLE user_address
     type            VARCHAR(255)    NOT NULL,
     notes           VARCHAR(255)    NOT NULL,
 
-    FOREIGN KEY (user_id) REFERENCES customer (id)
+    FOREIGN KEY (user_id) REFERENCES customer (id) ON DELETE CASCADE
 );
 
 CREATE SEQUENCE confirmation_token_seq INCREMENT BY 1;
@@ -61,5 +61,5 @@ CREATE TABLE confirmation_token
     expired_at      TIMESTAMP       NOT NULL,
     confirmed_at    TIMESTAMP,
 
-    FOREIGN KEY (user_id) REFERENCES customer (id)
+    FOREIGN KEY (user_id) REFERENCES customer (id) ON DELETE CASCADE
 );

@@ -1,4 +1,4 @@
-package com.projects.techvibe.user.device
+package com.projects.techvibe.client.device
 
 import com.projects.techvibe.model.device.Device
 import com.projects.techvibe.model.device.DeviceType

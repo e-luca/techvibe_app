@@ -5,6 +5,7 @@ import com.projects.techvibe.model.access.RolesConverter
 import com.projects.techvibe.model.access.UserAccess
 import com.projects.techvibe.model.access.UserRoles
 import com.projects.techvibe.model.user.User
+import com.projects.techvibe.model.user.UserModification
 import jakarta.persistence.*
 
 @Entity
@@ -59,6 +60,13 @@ data class UserAccessEntity(
 
     fun setPassword(newPassword: String): UserAccessEntity {
         password = newPassword
+        return this
+    }
+
+    fun update(request: UserModification): UserAccessEntity {
+        email = request.email
+        username = request.username
+
         return this
     }
 }

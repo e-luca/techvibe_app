@@ -66,6 +66,7 @@ class DeviceManagementService(
             repository.delete(device)
         } catch (ex: Exception) {
             logger.debug("Message: ${ex.message}, Cause: ${ex.cause}")
+            throw RuntimeException("An error occurred while deleting device")
         }
 
         return device.convert()

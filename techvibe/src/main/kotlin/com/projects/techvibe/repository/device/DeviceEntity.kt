@@ -58,6 +58,7 @@ data class DeviceEntity(
         price = request.price
         available = request.available
         imageUrl = request.imageUrl
+
         return this
     }
 }
