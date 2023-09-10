@@ -8,5 +8,5 @@ data class Device(
     val longDescription: String,
     val price: Double,
     val available: Boolean,
-    val imageUrl: String
+    val imageUrl: String,
 )

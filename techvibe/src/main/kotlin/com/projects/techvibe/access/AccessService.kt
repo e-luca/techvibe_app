@@ -1,6 +1,7 @@
 package com.projects.techvibe.access
 
 import com.projects.techvibe.email.EmailSender
+import com.projects.techvibe.model.access.AuthenticationRequest
 import com.projects.techvibe.model.registration.Registration
 import com.projects.techvibe.model.user.UserModification
 import com.projects.techvibe.repository.access.UserAccessEntity
@@ -10,7 +11,10 @@ import com.projects.techvibe.repository.user.UserEntity
 import com.projects.techvibe.repository.user.UserRepository
 import com.projects.techvibe.repository.user_address.UserAddressEntity
 import com.projects.techvibe.repository.user_address.UserAddressRepository
+import com.projects.techvibe.security.JwtService
 import jakarta.transaction.Transactional
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -26,7 +30,9 @@ class AccessService(
     private val userAddressRepository: UserAddressRepository,
     private val userPasswordEncoder: BCryptPasswordEncoder,
     private val confirmationTokenService: ConfirmationTokenService,
+    private val jwtService: JwtService,
     private val emailSender: EmailSender,
+    private val authenticationManager: AuthenticationManager,
 ) : UserDetailsService {
 
     companion object {
@@ -57,7 +63,7 @@ class AccessService(
         require(request.lastName.isNotBlank()) { "Last name should be provided!" }
     }
 
-    fun registerUser(request: Registration) {
+    fun registerUser(request: Registration): String {
         val userExists = repository.findByEmail(request.user.email)
 
         if (userExists != null) throw IllegalStateException("User already exists!")
@@ -72,6 +78,8 @@ class AccessService(
         userAddressRepository.save(userAddressData)
 
         sendConfirmationEmail(savedUser)
+
+        return jwtService.generateToken(userAccessData.convert())
     }
 
     @Transactional
@@ -87,6 +95,13 @@ class AccessService(
         confirmationTokenService.saveToken(confirmationToken)
 
         return "Email confirmed!"
+    }
+
+    fun authenticateUser(request: AuthenticationRequest): String {
+        authenticationManager.authenticate(UsernamePasswordAuthenticationToken(request.email, request.password))
+        val user = repository.findByEmail(request.email) ?: throw IllegalStateException("User access info not found!")
+
+        return jwtService.generateToken(user.convert())
     }
 
     private fun generateToken(userId: Long): ConfirmationTokenEntity {

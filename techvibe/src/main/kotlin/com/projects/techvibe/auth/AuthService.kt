@@ -1,6 +1,7 @@
 package com.projects.techvibe.auth
 
 import com.projects.techvibe.access.AccessService
+import com.projects.techvibe.model.access.AuthenticationRequest
 import com.projects.techvibe.model.access.SecurityQuestions
 import com.projects.techvibe.model.registration.Registration
 import org.springframework.stereotype.Service
@@ -8,9 +9,10 @@ import org.springframework.stereotype.Service
 @Service
 class AuthService(private val accessService: AccessService) {
 
-    fun register(request: Registration) {
+    fun register(request: Registration): String {
         accessService.validateRequest(request)
-        accessService.registerUser(request)
+
+        return accessService.registerUser(request)
     }
 
     fun confirmUser(token: String): String {
@@ -19,5 +21,9 @@ class AuthService(private val accessService: AccessService) {
 
     fun getSecurityQuestions(): List<String> {
         return SecurityQuestions.values().map { it.value }
+    }
+
+    fun authenticate(request: AuthenticationRequest): String {
+        return accessService.authenticateUser(request)
     }
 }

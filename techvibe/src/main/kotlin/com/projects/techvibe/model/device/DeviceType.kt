@@ -6,5 +6,5 @@ enum class DeviceType {
     AUDIO_EQUIPMENT,
     SMART_HOME_DEVICES,
     CAMERA,
-    GAMING_CONSOLES
+    GAMING_CONSOLES,
 }
