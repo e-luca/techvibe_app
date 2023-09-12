@@ -20,7 +20,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 class SecurityConfig(
     private val accessService: AccessService,
-    private val userPasswordEncoder: BCryptPasswordEncoder,
     private val jwtAuthFilter: JwtAuthenticationFilter,
 ) {
 
@@ -52,7 +51,7 @@ class SecurityConfig(
     fun authenticationProvider(): AuthenticationProvider {
         val authenticationProvider = DaoAuthenticationProvider()
         authenticationProvider.setUserDetailsService(accessService)
-        authenticationProvider.setPasswordEncoder(userPasswordEncoder)
+        authenticationProvider.setPasswordEncoder(passwordEncoder())
 
         return authenticationProvider
     }
@@ -60,5 +59,10 @@ class SecurityConfig(
     @Bean
     fun authenticationManager(config: AuthenticationConfiguration): AuthenticationManager {
         return config.authenticationManager
+    }
+
+    @Bean
+    fun passwordEncoder(): BCryptPasswordEncoder {
+        return BCryptPasswordEncoder()
     }
 }

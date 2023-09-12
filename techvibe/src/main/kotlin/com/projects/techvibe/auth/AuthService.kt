@@ -4,15 +4,23 @@ import com.projects.techvibe.access.AccessService
 import com.projects.techvibe.model.access.AuthenticationRequest
 import com.projects.techvibe.model.access.SecurityQuestions
 import com.projects.techvibe.model.registration.Registration
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
-class AuthService(private val accessService: AccessService) {
+class AuthService(
+    private val accessService: AccessService,
+    private val authenticationManager: AuthenticationManager,
+    private val passwordEncoder: PasswordEncoder,
+) {
 
     fun register(request: Registration): String {
         accessService.validateRequest(request)
+        val encodedPassword = passwordEncoder.encode(request.accessInfo.password)
 
-        return accessService.registerUser(request)
+        return accessService.registerUser(request, encodedPassword)
     }
 
     fun confirmUser(token: String): String {
@@ -24,6 +32,7 @@ class AuthService(private val accessService: AccessService) {
     }
 
     fun authenticate(request: AuthenticationRequest): String {
+        authenticationManager.authenticate(UsernamePasswordAuthenticationToken(request.email, request.password))
         return accessService.authenticateUser(request)
     }
 }

@@ -13,12 +13,9 @@ import com.projects.techvibe.repository.user_address.UserAddressEntity
 import com.projects.techvibe.repository.user_address.UserAddressRepository
 import com.projects.techvibe.security.JwtService
 import jakarta.transaction.Transactional
-import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.UUID
@@ -28,11 +25,9 @@ class AccessService(
     private val repository: UserAccessRepository,
     private val userRepository: UserRepository,
     private val userAddressRepository: UserAddressRepository,
-    private val userPasswordEncoder: BCryptPasswordEncoder,
     private val confirmationTokenService: ConfirmationTokenService,
     private val jwtService: JwtService,
     private val emailSender: EmailSender,
-    private val authenticationManager: AuthenticationManager,
 ) : UserDetailsService {
 
     companion object {
@@ -63,12 +58,11 @@ class AccessService(
         require(request.lastName.isNotBlank()) { "Last name should be provided!" }
     }
 
-    fun registerUser(request: Registration): String {
+    fun registerUser(request: Registration, encodedPassword: String): String {
         val userExists = repository.findByEmail(request.user.email)
 
         if (userExists != null) throw IllegalStateException("User already exists!")
 
-        val encodedPassword = userPasswordEncoder.encode(request.accessInfo.password)
         val savedUser = userRepository.save(UserEntity(request.user))
         val userAccessData = UserAccessEntity(savedUser.convert(), request.accessInfo)
         val userAddressData = UserAddressEntity(savedUser.id, request.address)
@@ -98,7 +92,6 @@ class AccessService(
     }
 
     fun authenticateUser(request: AuthenticationRequest): String {
-        authenticationManager.authenticate(UsernamePasswordAuthenticationToken(request.email, request.password))
         val user = repository.findByEmail(request.email) ?: throw IllegalStateException("User access info not found!")
 
         return jwtService.generateToken(user.convert())
