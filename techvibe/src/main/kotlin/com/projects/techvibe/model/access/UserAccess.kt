@@ -9,6 +9,8 @@ data class UserAccess(
     val id: Long,
     val userId: Long,
     val email: String,
+    val loginName: String,
+    val passcode: String,
     val roles: Set<UserRoles>,
     val locked: Boolean,
     val question: String,
@@ -21,11 +23,11 @@ data class UserAccess(
     }
 
     override fun getPassword(): String {
-        return password
+        return passcode
     }
 
     override fun getUsername(): String {
-        return username
+        return loginName
     }
 
     override fun isAccountNonExpired(): Boolean {

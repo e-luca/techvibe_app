@@ -55,7 +55,7 @@ data class UserAccessEntity(
     )
 
     fun convert(): UserAccess {
-        return UserAccess(id, userId, email, roles, locked, question, answer)
+        return UserAccess(id, userId, email, username, password, roles, locked, question, answer)
     }
 
     fun setPassword(newPassword: String): UserAccessEntity {
