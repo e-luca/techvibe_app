@@ -15,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.security.web.savedrequest.NullRequestCache
 
 @Configuration
 @EnableWebSecurity
@@ -38,11 +39,24 @@ class SecurityConfig(
             }
             .sessionManagement { sessionManagement ->
                 sessionManagement
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+            }
+            .requestCache { requestCache ->
+                requestCache
+                    .requestCache(NullRequestCache())
             }
             .authenticationProvider(authenticationProvider())
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter::class.java)
-            .formLogin(Customizer.withDefaults())
+            .formLogin { formLogin ->
+                formLogin.loginPage("/login")
+
+            }
+            .logout{ logout ->
+                logout
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/login")
+                    .invalidateHttpSession(true)
+            }
 
         return http.build()
     }
