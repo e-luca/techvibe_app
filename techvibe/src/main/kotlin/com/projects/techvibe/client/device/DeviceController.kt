@@ -12,4 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 class DeviceController(private val service: DeviceService) {
     @GetMapping
     fun getByType(@RequestParam type: DeviceType, pageable: Pageable) = service.getByType(type, pageable)
+
+    @GetMapping("/search")
+    fun searchByName(@RequestParam query: String, pageable: Pageable) = service.searchByName(query, pageable)
 }

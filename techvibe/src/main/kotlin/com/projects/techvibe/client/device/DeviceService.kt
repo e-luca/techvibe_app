@@ -18,4 +18,8 @@ class DeviceService(private val repository: DeviceRepository) {
     fun getByType(type: DeviceType, pageable: Pageable): Page<Device> {
         return repository.findByType(type, pageable).map { it.convert() }
     }
+
+    fun searchByName(query: String, pageable: Pageable): Page<Device> {
+        return repository.findByNameContaining(query, pageable).map { it.convert() }
+    }
 }

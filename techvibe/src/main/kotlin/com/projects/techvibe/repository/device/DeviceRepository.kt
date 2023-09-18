@@ -11,4 +11,5 @@ interface DeviceRepository : BaseRepository<DeviceEntity, Long> {
 
     fun findByName(name: String): DeviceEntity?
     fun findByType(type: DeviceType, pageable: Pageable): Page<DeviceEntity>
+    fun findByNameContaining(name: String, pageable: Pageable): Page<DeviceEntity>
 }
