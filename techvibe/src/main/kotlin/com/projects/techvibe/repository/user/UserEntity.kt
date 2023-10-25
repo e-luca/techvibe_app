@@ -64,4 +64,8 @@ data class UserEntity(
 
         return this
     }
+
+    fun updateLastLogin(date: LocalDateTime) {
+        lastLogin = date
+    }
 }

@@ -41,6 +41,11 @@ class AccessService(
         return user.convert()
     }
 
+    fun findByUsername(username: String): UserDetails {
+        val user = repository.findByUsername(username) ?: throw UsernameNotFoundException("User with username $username not found!")
+        return user.convert()
+    }
+
     fun validateRequest(request: Registration) {
         require(EMAIL_REGEX.matches(request.user.email)) { "Invalid email format!" }
         require(PASSWORD_REGEX.matches(request.accessInfo.password)) { "Invalid password format!" }
@@ -92,9 +97,17 @@ class AccessService(
     }
 
     fun authenticateUser(request: AuthenticationRequest): String {
-        val user = repository.findByEmail(request.email) ?: throw IllegalStateException("User access info not found!")
+        val userAccessData = repository.findByEmail(request.email) ?: throw IllegalStateException("User access info not found!")
+        val user = userRepository.findByEmail(request.email) ?: throw IllegalStateException("User not found!")
 
-        return jwtService.generateToken(user.convert())
+        try {
+            user.updateLastLogin(LocalDateTime.now())
+            userRepository.save(user)
+        } catch (ex: Exception) {
+            throw RuntimeException("Error occurred while updating user last login date!")
+        }
+
+        return jwtService.generateToken(userAccessData.convert())
     }
 
     private fun generateToken(userId: Long): ConfirmationTokenEntity {
@@ -110,6 +123,7 @@ class AccessService(
         val token = generateToken(user.id)
         val link = "http://localhost:8080/api/v1/auth/confirm?token=$token"
         val emailContent = emailSender.buildUserConfirmationEmail(user.firstName, link)
+
         emailSender.send(user.email, emailContent)
     }
 }

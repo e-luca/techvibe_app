@@ -4,4 +4,7 @@ import com.projects.techvibe.repository.BaseRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface UserRepository : BaseRepository<UserEntity, Long>
+interface UserRepository : BaseRepository<UserEntity, Long> {
+
+    fun findByEmail(email: String): UserEntity?
+}

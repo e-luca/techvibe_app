@@ -32,6 +32,7 @@ class SecurityConfig(
             .csrf { csrf ->
                 csrf.disable()
             }
+            .cors { corsConfigurationSource() }
             .authorizeHttpRequests { authorizeHttpRequests ->
                 authorizeHttpRequests
                     .requestMatchers("/api/v*/auth/**")
