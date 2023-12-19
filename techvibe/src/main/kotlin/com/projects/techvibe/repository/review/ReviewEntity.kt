@@ -50,7 +50,7 @@ data class ReviewEntity(
         LocalDateTime.now(),
     )
 
-    fun convert(email: String, imageUrl: String) = Review(id, deviceId, email, imageUrl, rating, favorite, comment, updated)
+    fun convert(username: String, imageUrl: String) = Review(id, deviceId, username, imageUrl, rating, favorite, comment, updated)
 
     fun update(request: ReviewModification): ReviewEntity {
         rating = request.rating
