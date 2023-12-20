@@ -12,10 +12,6 @@ interface ReviewRepository : BaseRepository<ReviewEntity, Long> {
 
     fun findByDeviceIdAndUserId(deviceId: Long, userId: Long): ReviewEntity?
 
-    @Query(
-        "SELECT dr.id, dr.device_id, c.username, c.image_url, dr.rating, dr.favorite, dr.comment, dr.updated" +
-            "FROM device_review dr INNER JOIN customer c ON dr.user_id = c.id WHERE dr.device_id = :deviceId ORDER BY dr.updated",
-        nativeQuery = true,
-    )
+    @Query(name = "find_all_reviews", nativeQuery = true)
     fun findAllReviewsForDevice(deviceId: Long, pageable: Pageable): Page<Review>
 }
