@@ -23,12 +23,12 @@ class CartService(
         private val logger = LoggerFactory.getLogger(CartService::class.java)
     }
 
-    val ACTION_ADD = "Add"
-    val ACTION_DELETE = "Delete"
+    val actionAdd = "Add"
+    val actionRemove = "Remove"
 
     fun findCartForUser(userId: Long): Cart {
         try {
-            val cart = repository.findByUserId(userId) ?: throw IllegalArgumentException("Cart doesn't exist for user $userId!")
+            val cart = repository.findByUserIdAndCheckedOut(userId, false) ?: throw IllegalArgumentException("Cart doesn't exist for user $userId!")
             return cart.convert()
         } catch (ex: Exception) {
             logger.debug("Message: ${ex.message}, Cause: ${ex.cause}")
@@ -36,14 +36,14 @@ class CartService(
         }
     }
 
-    fun processItem(cartId: Long, itemId: Long, userId: Long, action: String) {
-        val cart = repository.findByIdOrNull(cartId) ?: createCart(userId)
+    fun processItem(itemId: Long, userId: Long, action: String) {
+        val cart = repository.findByUserIdAndCheckedOut(userId, false) ?: createCart(userId)
 
         try {
             val device = deviceRepository.findByIdOrNull(itemId) ?: throw IllegalArgumentException("Device with id $itemId doesn't exist!")
-            val cartItem = cartItemRepository.findByCartIdAndItemId(cartId, itemId) ?: CartItemEntity(0, cartId, itemId, 0, LocalDateTime.now())
+            val cartItem = cartItemRepository.findByCartIdAndItemId(cart.id, itemId) ?: CartItemEntity(0, cart.id, itemId, 0, LocalDateTime.now())
 
-            if (action == ACTION_ADD) {
+            if (action == actionAdd) {
                 addItemToCart(cart, cartItem, device)
             } else {
                 deleteItemFromCart(cart, cartItem, device)

@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface CartRepository : BaseRepository<CartEntity, Long> {
-    fun findByUserId(userId: Long): CartEntity?
+    fun findByUserIdAndCheckedOut(userId: Long, checkedOut: Boolean): CartEntity?
 }

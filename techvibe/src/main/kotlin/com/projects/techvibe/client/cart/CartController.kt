@@ -11,11 +11,11 @@ class CartController(private val service: CartService) {
     @GetMapping
     fun getCart(@AuthenticationPrincipal user: UserAccess) = service.findCartForUser(user.userId)
 
-    @PostMapping("/{id}/add")
-    fun addItem(@AuthenticationPrincipal user: UserAccess, @PathVariable id: Long, @RequestParam itemId: Long) = service.processItem(id, itemId, user.userId, service.ACTION_ADD)
+    @PostMapping("/{itemId}/add")
+    fun addItem(@AuthenticationPrincipal user: UserAccess, @PathVariable itemId: Long) = service.processItem(itemId, user.userId, service.actionAdd)
 
-    @PostMapping("/{id}/remove")
-    fun removeItem(@AuthenticationPrincipal user: UserAccess, @PathVariable id: Long, @RequestParam itemId: Long) = service.processItem(id, itemId, user.userId, service.ACTION_DELETE)
+    @PostMapping("/{itemId}/remove")
+    fun removeItem(@AuthenticationPrincipal user: UserAccess, @PathVariable itemId: Long) = service.processItem(itemId, user.userId, service.actionRemove)
 
     @PutMapping("/{id}/checkout")
     fun checkout(@PathVariable id: Long) = service.checkout(id)
