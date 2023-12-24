@@ -11,6 +11,9 @@ class CartController(private val service: CartService) {
     @GetMapping
     fun getCart(@AuthenticationPrincipal user: UserAccess) = service.findCartForUser(user.userId)
 
+    @GetMapping("/{id}/items")
+    fun getItems(@PathVariable id: Long) = service.findCartItems(id)
+
     @PostMapping("/{itemId}/add")
     fun addItem(@AuthenticationPrincipal user: UserAccess, @PathVariable itemId: Long) = service.processItem(itemId, user.userId, service.actionAdd)
 

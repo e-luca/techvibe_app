@@ -1,6 +1,7 @@
 package com.projects.techvibe.client.cart
 
 import com.projects.techvibe.model.cart.Cart
+import com.projects.techvibe.model.cart.CartItem
 import com.projects.techvibe.repository.cart.CartEntity
 import com.projects.techvibe.repository.cart.CartRepository
 import com.projects.techvibe.repository.cartitem.CartItemEntity
@@ -33,6 +34,15 @@ class CartService(
         } catch (ex: Exception) {
             logger.debug("Message: ${ex.message}, Cause: ${ex.cause}")
             throw RuntimeException("An error occurred while fetching cart for user")
+        }
+    }
+
+    fun findCartItems(cartId: Long): List<CartItem> {
+        try {
+            return cartItemRepository.findItemsByCartId(cartId)
+        } catch (ex: Exception) {
+            logger.debug("Message: ${ex.message}, Cause: ${ex.cause}")
+            throw RuntimeException("An error occurred while fetching cart items")
         }
     }
 
