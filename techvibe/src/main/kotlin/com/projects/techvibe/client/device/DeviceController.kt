@@ -27,6 +27,9 @@ class DeviceController(
     @GetMapping("/search")
     fun searchByName(@RequestParam query: String, pageable: Pageable) = service.searchByName(query, pageable)
 
+    @GetMapping("/favorites")
+    fun getFavorites(@AuthenticationPrincipal user: UserAccess, pageable: Pageable) = service.getFavorites(user.userId, pageable)
+
     @GetMapping("/review/{id}")
     fun getReview(@AuthenticationPrincipal user: UserAccess, @PathVariable id: Long) = reviewService.getForUser(id, user.userId)
 

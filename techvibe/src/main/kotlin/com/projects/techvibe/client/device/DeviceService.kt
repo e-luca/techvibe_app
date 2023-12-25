@@ -22,4 +22,8 @@ class DeviceService(private val repository: DeviceRepository) {
     fun searchByName(query: String, pageable: Pageable): Page<Device> {
         return repository.findByNameContaining(query, pageable).map { it.convert() }
     }
+
+    fun getFavorites(userId: Long, pageable: Pageable): Page<Device> {
+        return repository.findFavoritesForUser(userId, pageable).map { it.convert() }
+    }
 }

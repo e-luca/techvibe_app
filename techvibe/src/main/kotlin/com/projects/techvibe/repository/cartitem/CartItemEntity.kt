@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 @Entity
 @NamedNativeQuery(
     name = "find_cart_items",
-    query = "SELECT ci.item_id, d.image_url, d.price, d.short_description, ci.quantity, ci.updated " +
+    query = "SELECT ci.item_id, d.name, d.image_url, d.price, d.short_description, ci.quantity, ci.updated " +
         "FROM cart_item ci INNER JOIN device d ON ci.item_id = d.id WHERE ci.cart_id = :cartId ORDER BY ci.updated",
     resultSetMapping = "CartItemEntityMapping",
 )
@@ -18,6 +18,7 @@ import java.time.LocalDateTime
             targetClass = CartItem::class,
             columns = [
                 ColumnResult(name = "item_id", type = Long::class),
+                ColumnResult(name = "name", type = String::class),
                 ColumnResult(name = "image_url", type = String::class),
                 ColumnResult(name = "price", type = Double::class),
                 ColumnResult(name = "short_description", type = String::class),
